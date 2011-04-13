@@ -1,9 +1,0 @@
-List of things to do:
-
-For version 1.0:
-We are done!! Yay! I mean v1.0 is ready!
-1. Add GPL or BSD license.
-2. Make sure to give Tim Hammerquist proper credit
-
-Nice but not necessary:
-3. I want to eventually make a gui for this to work with.
