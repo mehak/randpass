@@ -5,3 +5,4 @@ Things that must be done:
   3. Make documentation universal, instead of 
      just a file called "manpage".
   4. Write the manpage.
+  5. Do standard configure and make stuff
