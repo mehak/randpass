@@ -1,0 +1,37 @@
+.\" Going to use this to process,
+.\" not sur if it works yet, so be careful
+.\" groff -man -Tascii randpass.1
+.\"
+.TH RANDPASS 1 "April, 14, 2011" Linux "User Manuals"
+.SH NAME
+randpass \- Generate secure password
+.SH SYNOPSIS
+.B randpass
+.\" the Following line is a place holder. I need to re-write it to be more informative
+.RI [ OPTIONS ]
+.\" The information in this section requires the previous section to be re-written
+.\" potentially I am going to remove the interactive portions of randpass as they
+.\" are probably not needed and even annoying.
+.SH DESCRIPTION
+.B randpass
+generates number NUMBER passwords of length LENGTH.
+.PP
+The default pool for choosing password characters is all
+prinatable characters between ASCII 33 - 126.
+.\" Need to be more specific on the above line
+.PP
+.\" Need to add more information here for long options
+To remove a character group from the pool, use -A for
+alphabet characters, -N for numerals, and -P for 
+punctuation.
+.PP
+.\" Same as above
+Output can be redirected to a file using the normal
+methods (> or >>) or from within the program using
+-o FILE to overwrite FILE or with -a to append to
+FILE.
+.SH OPTIONS
+.SH EXAMPLES
+.SH BUGS
+.SH AUTHOR
+Nathanael Merlin <mehalelal at gmail dot com>
