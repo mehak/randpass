@@ -66,10 +66,12 @@ char *randpass(const int plength)
  password = (char*) malloc (plength + 1);
  memset (password, 0, plength + 1); /* Set password to all 0's */
 
- /* I don't remember what this does.  I am going to have to work it
-    out after the next commit though. */
+ /* I don't remember what this does, exactly.  I am going to have to work it
+    out after the next commit though.  Basically, it makes the password based
+    on user defined conditions.  But why is it so hard to read? 
+    I think I am just going to re-write this using switch and one variable */
  for (i = 0; i < plength; i++) {
-	if ( (i == 0 && !nalpha) || (nnum && npunc) ) {
+	if ( (i == 0 && !nalpha) || (nnum && npunc) ) { // Why did I put in i == 0?
 		do {
 			rn = randint(65,122);
 		}

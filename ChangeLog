@@ -1,7 +1,0 @@
-Thurs April 14, 2011 01:09:30 Nathanael Merlin
-	
-	* randpass.c: made the interactive output more readable.
-		      Did some comment formatting to make the code
-		      more readable.
-		      Fixed a bug that could have caused a seg fault
-
