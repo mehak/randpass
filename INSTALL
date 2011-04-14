@@ -1,0 +1,14 @@
+Currently installing is a real pain, so don't do it.
+
+There is no 'make install', so you can't anyway.
+
+If you are compiling for windows on Linux, use
+the makefile src/Makefile.linWin
+
+If you are compiling for windows on windows use
+src/Makefil.win
+
+And lastly, if you are compiling for linux on linux use:
+make
+
+I need to learn how to do cool configuring stuff.

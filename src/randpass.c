@@ -264,7 +264,7 @@ int removeoptions( void )
 
  do {
 	printf("To remove certain characters from being used in the passwords"\
-	       "please type the corresponding letter. \n "\
+	       "please type the corresponding letter. \n"\
 	       "Possible removal options: \n" \
 	       "     A - Remove alphabet characters \n" \
 	       "     N - Remove numeric characters \n" \
