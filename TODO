@@ -1,8 +1,8 @@
 Things that must be done:
 
-  1. Check for any grammar errors
-  2. Make sure the licensing is on all the code
-  3. Make documentation universal, instead of 
-     just a file called "manpage".
-  4. Write the manpage.
-  5. Do standard configure and make stuff
+  . Check for any grammar errors
+  . Make documentation universal, instead of 
+     just a file called "randpass.1". - Check the time source code
+  . Write the manpage.
+  . Put the gpl on the manpage .
+  . Do standard configure and make configurations.
