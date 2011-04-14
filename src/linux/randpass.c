@@ -1,4 +1,3 @@
-/*
 /*  Copyright 2010 Nathanael Merlin
 
     This file is part of randpass.
@@ -16,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/*
   Name: randpass
   Author: Nate Merlin
   Purpose: To make secure random passwords
