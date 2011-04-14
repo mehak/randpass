@@ -5,8 +5,4 @@ It is my first public program, so be easy on me.
 Also, in case any files don't have the GPL on top
 of them, all file are released under GPLv3.
 
-If you want to change randpass.c, just change
-the linux version and copy it to the win folder.
-The windows specific stuff happens in random.h
-
 Checkout TODO for more information.
