@@ -7,6 +7,7 @@ Things that must be done:
   . Put the GPL on the manpage.
   . Do standard configure and make configurations.
   . Cleanup the code.
+  . Work on lack of randomness in windows code
 
 Long time in coming:
   . I would like to re-write the psuedo-random number
