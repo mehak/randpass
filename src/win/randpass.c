@@ -43,24 +43,24 @@ int showpass(int passlen, int passnum);
 static void usage(FILE *stream, int status);
 
 /* Global Variables */
-static int plength; /* Password length */
-static int pswnum; /* Number of passwords */
-static int seed; /* 0 = use time as the seed, 1 = used provided value */
+static int plength; 	    /* Password length */
+static int pswnum; 	    /* Number of passwords */
+static int seed; 	    /* 0 = use time as the seed, 1 = used provided value */
 static const char *outfile; /* Output filename */
-static bool append; /* Append to outfile instead of overwriting it */
-static FILE *outfp; /* Output stream - default stdout */
-static char *program_name; /* Program that executed this program */
-static bool nalpha; /* remove alphabet characters from character pool */
-static bool nnum;   /* remove numeric characters from character pool */
-static bool npunc;  /* remove punctuation marks from character pool */
-static bool rinteract; /* removes interactive bits of the program.
-			  Only non-vital bits.  We still need at least a 
-			  password length and number of passwords */
+static bool append;         /* Append to outfile instead of overwriting it */
+static FILE *outfp;         /* Output stream - default stdout */
+static char *program_name;  /* Program that executed this program */
+static bool nalpha; 	    /* remove alphabet characters from character pool */
+static bool nnum;   	    /* remove numeric characters from character pool */
+static bool npunc;  	    /* remove punctuation marks from character pool */
+static bool rinteract; 	    /* removes interactive bits of the program.
+			       Only non-vital bits.  We still need at least a 
+			       password length and number of passwords */
 
 /* Makes random password of length plength */  
 char *randpass(const int plength)
 {
- int i, rn; /* i = iteration, rn = random number */
+ int i, rn; 	 /* i = iteration, rn = random number */
  char *password; /* holds the random password */
 
  password = (char*) malloc (plength + 1);
@@ -129,17 +129,17 @@ int getargs(int argc, char **argv)
  };
 
 /* Initialize variables for use later */
- plength = 0; /* default is to interactively get the length of your password */
- pswnum = 0; /* default is to interactively get the number of passwords */
- seed = 0; /* default is to use initrand */
- outfile = NULL; /* Output file, only used if -o is used */
- append = false; /* Append to outfile instead of overwriting it */
- outfp = stdout; /* Set outfp to default (stdout) */
+ plength = 0; 		 /* default is to interactively get the length of your password */
+ pswnum = 0; 		 /* default is to interactively get the number of passwords */
+ seed = 0; 		 /* default is to use initrand */
+ outfile = NULL; 	 /* Output file, only used if -o is used */
+ append = false; 	 /* Append to outfile instead of overwriting it */
+ outfp = stdout; 	 /* Set outfp to default (stdout) */
  program_name = argv[0]; /* set name of program that called process */
- nalpha = false; /* Default is to use alphabet characters */
- nnum = false;   /* Default is to use number characters */
- npunc = false;  /* Default is to use punctuation characters */
- rinteract = false; /* Default is to interact with the user */
+ nalpha = false; 	 /* Default is to use alphabet characters */
+ nnum = false;   	 /* Default is to use number characters */
+ npunc = false;  	 /* Default is to use punctuation characters */
+ rinteract = false; 	 /* Default is to interact with the user */
 
  while ((optc = getopt_long(argc, argv, "+hVANPRao:l:n:s:", longopts, (int *) 0)) != EOF)
  {
@@ -156,7 +156,7 @@ int getargs(int argc, char **argv)
 	  break;
 	case 'n':
 	  pswnum = strtol(optarg, NULL, 10);
-	  if (pswnum > 99999 || pswnum < 1) plength = 0;
+	  if (pswnum > 99999 || pswnum < 1) pswnum = 0;
 	  break;
 	case 's':
 	  seed = strtol(optarg, NULL, 10);
@@ -262,14 +262,15 @@ int removeoptions( void )
 
  do {
 	printf("To remove certain characters from being used in the passwords"\
-	       " please type the corresponding letter.  To exit press e then"\
-	       "enter.  Possible removal options: \n" \
-	       "A - Remove alphabet characters \n" \
-	       "N - Remove numeric characters \n" \
-	       "P - Remove punctuation characters \n" \
-	       "Press enter after pressing a character \n" \
-	       "Case is not important. \n"
-	       "Setting all options resets them to their default values. \n\n");
+               "please type the corresponding letter. \n "\
+               "Possible removal options: \n" \
+               "     A - Remove alphabet characters \n" \
+               "     N - Remove numeric characters \n" \
+               "     P - Remove punctuation characters \n" \
+               "     All other keys continue on \n" \
+               "Press enter after pressing a character \n" \
+               "Case is not important. \n"
+               "Setting all options resets them to their default values. \n\n");
 
 	if (nnum && nalpha && npunc) {
 		printf("\n\nRESETTING CHARACTER FLAGS. \n\n\n");
@@ -286,9 +287,6 @@ int removeoptions( void )
 	clrstdin(&option);
 
 	switch(option) {
-	  case 'E':
-		opttest = true;
-		break;
 	  case 'A':
 		nalpha = true;
 		break;
@@ -299,6 +297,7 @@ int removeoptions( void )
 		npunc = true;
 		break;
 	  default:
+		opttest = true;
 		break;
 	}
  }
@@ -317,7 +316,7 @@ int showpass(int passlen, int passnum)
 	if (seed == 0)
 		initrand();
  	password = randpass(passlen);
- 	fprintf(outfp, "Password: %s \n", password);
+ 	fprintf(outfp, "%s \n", password); /* removed "Password: ", suggested by Tim H. */
 	if (outfile) 
 		fflush(outfp);
  	free(password);

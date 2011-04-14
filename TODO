@@ -4,8 +4,9 @@ Things that must be done:
   . Make documentation universal, instead of 
      just a file called "randpass.1". - Check the time source code
   . Write the manpage.
-  . Put the gpl on the manpage .
+  . Put the GPL on the manpage.
   . Do standard configure and make configurations.
+  . Cleanup the code.
 
 Long time in coming:
   . I would like to re-write the psuedo-random number
