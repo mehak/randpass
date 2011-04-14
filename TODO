@@ -6,3 +6,7 @@ Things that must be done:
   . Write the manpage.
   . Put the gpl on the manpage .
   . Do standard configure and make configurations.
+
+Long time in coming:
+  . I would like to re-write the psuedo-random number
+    generator.
