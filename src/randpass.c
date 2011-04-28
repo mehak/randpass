@@ -36,11 +36,10 @@ extern const char *version_string;
 /* Function prototypes */
 char *randpass(const int plength);
 int getargs(int argc, char **argv);
-int getplength( void );
-int getpnum( void );
-int removeoptions( void );
 int showpass(int passlen, int passnum);
 static void usage(FILE *stream, int status);
+char genchar(const int charpool);
+/* int errorout(int errors); // This needs to be written, used to show errors */
 
 /* Global Variables */
 static int plength;         /* Password length */
@@ -50,63 +49,72 @@ static const char *outfile; /* Output filename */
 static bool append; 	    /* Append to outfile instead of overwriting it */
 static FILE *outfp; 	    /* Output stream - default stdout */
 static char *program_name;  /* Program that executed this program */
-static bool nalpha; 	    /* remove alphabet characters from character pool */
-static bool nnum;   	    /* remove numeric characters from character pool */
-static bool npunc;  	    /* remove punctuation marks from character pool */
-static bool rinteract;      /* removes interactive portions of the program.
-			       Only non-vital portions.  We still need at least a 
-			       password length and number of passwords */
+static int charpool;	    /* Replaces the nalpha, nnum, and npunc stuff, check 
+			       the randpass function for details */
+/*static int errors;	  */  // Used to hold various program specific errors, not implemented 
 
 /* Makes random password of length plength */  
 char *randpass(const int plength)
 {
- int i, rn; 	 /* i = iteration, rn = random number */
+ int i; 	 /* i = iteration */
  char *password; /* holds the random password */
 
  password = (char*) malloc (plength + 1);
  memset (password, 0, plength + 1); /* Set password to all 0's */
 
- /* I don't remember what this does, exactly.  I am going to have to work it
-    out after the next commit though.  Basically, it makes the password based
-    on user defined conditions.  But why is it so hard to read? 
-    I think I am just going to re-write this using switch and one variable */
+ /* Used to generate the password.
+  0 - All characters in all positions
+  1 - All characters, 1st character is alpha
+  2 - Alphanumeeric characters
+  3 - Alpha + puncuation 
+  4 - numbers & puncuations
+  5 - Alpha only
+  6 - numbers only
+  7 - puncuation only
+*/
  for (i = 0; i < plength; i++) {
-	if ( (i == 0 && !nalpha) || (nnum && npunc) ) { // Why did I put in i == 0?
-		do {
-			rn = randint(65,122);
-		}
-		while (!isalpha(rn));
-		password[i] = rn;
+	 switch(charpool) {
+		case 0:
+			password[i] = genchar(0);
+
+			break;
+		case 1:
+			if (i == 0) {
+				password[i] = genchar(3);
+			}
+			else {
+				password[i] = genchar(0);
+			}
+
+			break;
+		case 2:
+			password[i] = genchar(1);
+
+			break;
+		case 3:
+			password[i] = genchar(2);
+
+			break;
+		case 4: 
+			password[i] = genchar(4);
+
+			break;
+		case 5:
+			password[i] = genchar(3);
+
+			break;
+		case 6:
+			password[i] = genchar(5);
+
+			break;
+		case 7:
+			password[i] = genchar(6);
+
+			break;
+		default:
+			break;
 	}
-	else if (npunc && !nalpha && !nnum) {
-		do {
-			rn = randint(48,122);
-		}
-		while (!isalnum(rn));
-		password[i] = rn;
-	}
-	else if (nalpha && npunc) {
-		rn = randint(48,57);
-		password[i] = rn;
-	}
-	else if (nalpha && nnum) {
-		do {
-			rn = randint(33,126);
-		}
-		while (!ispunct(rn));
-		password[i] = rn;
-	}
-	else if (nalpha && !nnum && !npunc) {
-		do {
-			rn = randint(33, 126);
-		}
-		while(isalpha(rn));
-		password[i] = rn;
-	}
-	else {
-		rn =  randint(33,126);
-		password[i] = rn;
-	}
+
  }
 
  return(password);
@@ -133,17 +141,14 @@ int getargs(int argc, char **argv)
  };
 
 /* Initialize variables for use later */
- plength = 0; 		 /* default is to interactively get the length of your password */
- pswnum = 0; 		 /* default is to interactively get the number of passwords */
+ plength = 8; 		 /* default is password length of 8 characters */
+ pswnum = 1; 		 /* default is one password */
  seed = 0; 		 /* default is to use initrand */
  outfile = NULL; 	 /* Output file, only used if -o is used */
  append = false; 	 /* Append to outfile instead of overwriting it */
  outfp = stdout; 	 /* Set outfp to default (stdout) */
  program_name = argv[0]; /* set name of program that called process */
- nalpha = false; 	 /* Default is to use alphabet characters */
- nnum = false;   	 /* Default is to use number characters */
- npunc = false;  	 /* Default is to use punctuation characters */
- rinteract = false;      /* Default is to interact with the user */
+ charpool = 0;		 /* Default is to use all characters */
 
  while ((optc = getopt_long(argc, argv, "+hVANPRao:l:n:s:", longopts, (int *) 0)) != EOF)
  {
@@ -156,11 +161,11 @@ int getargs(int argc, char **argv)
           exit(0);
 	case 'l':
 	  plength = strtol(optarg, NULL, 10);
-	  if (plength > 99 || plength < 8) plength = 0;
+	  if (plength > 99 || plength < 8) plength = 8;
 	  break;
 	case 'n':
 	  pswnum = strtol(optarg, NULL, 10);
-	  if (pswnum > 99999 || pswnum < 1) pswnum = 0;
+	  if (pswnum > 99999 || pswnum < 1) pswnum = 1;
 	  break;
 	case 's':
 	  seed = strtol(optarg, NULL, 10);
@@ -179,18 +184,18 @@ int getargs(int argc, char **argv)
 	  outfile = optarg;
 	  break;
 	case 'A':
-	  nalpha = true;
+	  charpool += 4;
 	  break;
 	case 'N':
-	  nnum = true;
+	  charpool += 3;
 	  break;
 	case 'P':
-	  npunc = true;
+	  charpool += 2;
 	  break;
-	case 'R':
-	  rinteract = true;
+	case 'R': // Possible remove, at the very least redefine
 	  break;
 	default:
+	  // Going to implement with errorOut
 	  break;
  	}
 
@@ -207,21 +212,20 @@ int getargs(int argc, char **argv)
  	}
  }
 
-/* Checking to make sure there are characters in the character pool */
- if ( nnum && nalpha && npunc ) {
+/* Checking to make sure there are characters in the character pool. */
+ if ( charpool == 9 ) {
 	 fprintf(stderr, "Error: No characters in character pool: \n" \
 			 "Do not use -P, -A, and -N together or " \
 			 "--noalpha, -nonum, and --nopunc together.\n");
 	 exit(1);
  }
- 
 
  return 0;
 } 
 
-/* This is used to get and validate plength which holds the length of the
- * password */
-int getplength( void )
+
+/* Check password length given on the command line */
+int checkplength( void )
 {
  char pstrlen[3];
  int plength;
@@ -237,9 +241,8 @@ int getplength( void )
  return(plength);
 }
 
-/* This gets the amount of passwords that the user wants and validates user
- * input */
-int getpnum( void )
+/* Check the number of passwords given on the command line */
+int checkpnum( void )
 {
  char numstrlen[6];
  int pnum;
@@ -253,61 +256,6 @@ int getpnum( void )
  while (pnum < 1);
 
  return(pnum);
-}
-
-/* Determines if the user would like to remove characters from the password
- * character set */
-int removeoptions( void )
-{
- static bool opttest;
- static char option;
-
- opttest = false;
-
- do {
-	printf("To remove certain characters from being used in the passwords"\
-	       "please type the corresponding letter. \n"\
-	       "Possible removal options: \n" \
-	       "     A - Remove alphabet characters \n" \
-	       "     N - Remove numeric characters \n" \
-	       "     P - Remove punctuation characters \n" \
-	       "     All other keys exit \n" \
-	       "Press enter after pressing a character \n" \
-	       "Case is not important. \n"
-	       "Setting all options resets them to their default values. \n\n");
-
-	if (nnum && nalpha && npunc) {
-		printf("\n\nRESETTING CHARACTER FLAGS. \n\n\n");
-		nalpha = false;
-		nnum = false;
-		npunc = false;
-	}
-	
-	if (nalpha) printf("Alphabet characters will not be used \n");
-	if (nnum)   printf("Numbers will not be used \n");
-	if (npunc)  printf("Puncuation marks will not be used \n");
-
-	option = toupper(fgetc(stdin));
-	clrstdin(&option);
-
-	switch(option) {
-	  case 'A':
-		nalpha = true;
-		break;
-	  case 'N':
-		nnum = true;
-		break;
-	  case 'P':
-		npunc = true;
-		break;
-	  default:
-		opttest = true;
-		break;
-	}
- }
- while ( opttest == false );
-
- return(0);
 }
 
 /* here is where the magic happens.  This shows the password or passwords */
@@ -346,20 +294,80 @@ Usage: %s [OPTIONS] \n\
  exit(status);
 }
 
+/* generate characters for the random password.
+   0 - All characters, 1 - alphanumeric, 2 - alpha + puncuation
+   3 - alpha only, 4 - numbers + puncuation, 5 - numbers only
+   6 - puncuation only */
+char genchar(const int charpool) 
+{
+	int rn;
+
+	switch(charpool) {
+		case 0:
+			rn = randint(33, 126);
+
+			break;
+		case 1:
+			do {
+				rn = randint(48, 122);
+			}
+			while ( !isalnum(rn) );
+
+			break;
+		case 2:
+			do {
+				rn = randint(33, 126);
+			}
+			while ( isdigit(rn) );
+
+			break;
+		case 3:
+			do {
+				rn = randint(65, 122);
+			}
+			while ( !isalpha(rn) );
+			break;
+		case 4:
+			do {
+				rn = randint(33, 126);
+			}
+			while ( isalpha(rn) );
+
+			break;
+		case 5:
+			rn = randint(48, 57);
+
+			break;
+		case 6:
+			do {
+				rn = randint(33, 126);
+			}
+			while ( !ispunct(rn) );
+
+			break;
+		default:
+			// Going to implement with errorout
+			break;
+	}
+
+	return(rn);
+}
+
+/* This is used to show various program specific errors to the user 
+   because this program will always display one password of character
+   length eight.  Or it will for the most part. */
+/*int errorout(int errors)
+{ 
+}
+*/
+
 int main(int argc, char **argv)
 {
  getargs(argc, argv);
 
- if (plength == 0)
- 	plength = getplength();
-
- if (pswnum == 0)
- 	pswnum = getpnum();
-
- if (!nnum && !nalpha && !npunc && !rinteract)
-	 removeoptions();
- 
  showpass(plength, pswnum);
+
+ /* errorout(int errors); */
 
  return(0);
 }
