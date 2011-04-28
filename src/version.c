@@ -1,1 +1,1 @@
-const char *version_string = "randpass v1.01";
+const char *version_string = "randpass v1.10";

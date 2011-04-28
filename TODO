@@ -9,6 +9,8 @@ Things that must be done:
   . Cleanup the code.
   . Work on lack of randomness in windows code
   . Make an INSTALL file
+  . Implement errorOut
+  . Make this program unicode compatible
 
 Long time in coming:
   . I would like to re-write the psuedo-random number
