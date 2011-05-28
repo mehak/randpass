@@ -28,7 +28,6 @@
 #include <getopt.h>
 #include <stdbool.h>
 #include "random.h"
-#include "custom.h"
 
 /* Version information */
 extern const char *version_string;
@@ -222,41 +221,6 @@ int getargs(int argc, char **argv)
 
  return 0;
 } 
-
-
-/* Check password length given on the command line */
-int checkplength( void )
-{
- char pstrlen[3];
- int plength;
-
- do {
-	printf("Please provide a password length between 8 and 99:\n");
-	fgets(pstrlen, 3, stdin);
-	plength = strtol(pstrlen, NULL, 10);
-	clrstdin(pstrlen);
- }
- while (plength < 8);
-
- return(plength);
-}
-
-/* Check the number of passwords given on the command line */
-int checkpnum( void )
-{
- char numstrlen[6];
- int pnum;
-
- do {
-	printf("How many passwords would you like?(up to 99999)\n");
-	fgets(numstrlen, 6, stdin);
-	pnum = strtol(numstrlen, NULL, 10);
-	clrstdin(numstrlen);
- }
- while (pnum < 1);
-
- return(pnum);
-}
 
 /* here is where the magic happens.  This shows the password or passwords */
 int showpass(int passlen, int passnum)
