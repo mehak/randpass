@@ -40,15 +40,15 @@ static void usage(FILE *stream, int status);
 char genchar(const int charpool);
 
 /* Global Variables */
-static int plength;         /* Password length */
-static int pswnum; 	    /* Number of passwords */
-static int seed; 	    /* 0 = use time as the seed, 1 = used provided value */
-static const char *outfile; /* Output filename */
-static bool append; 	    /* Append to outfile instead of overwriting it */
-static FILE *outfp; 	    /* Output stream - default stdout */
-static char *program_name;  /* Program that executed this program */
-static int charpool;	    /* Replaces the nalpha, nnum, and npunc stuff, check 
-			       the randpass function for details */
+static unsigned int plength;        /* Password length */
+static unsigned int pswnum; 	    /* Number of passwords */
+static int seed; 	    	    /* 0 = use time as the seed, 1 = used provided value */
+static const char *outfile; 	    /* Output filename */
+static bool append; 	    	    /* Append to outfile instead of overwriting it */
+static FILE *outfp; 	    	    /* Output stream - default stdout */
+static char *program_name;  	    /* Program that executed this program */
+static int charpool;	    	    /* Replaces the nalpha, nnum, and npunc stuff, check 
+			       	       the randpass function for details */
 
 /* Makes random password of length plength */  
 char *randpass(const int plength)
@@ -157,11 +157,11 @@ int getargs(int argc, char **argv)
           exit(0);
 	case 'l':
 	  plength = strtol(optarg, NULL, 10);
-	  if (plength > 99 || plength < 8) plength = 8;
+	  if (plength > 2147683147 || plength < 8) plength = 8;
 	  break;
 	case 'n':
 	  pswnum = strtol(optarg, NULL, 10);
-	  if (pswnum > 99999 || pswnum < 1) pswnum = 1;
+	  if (pswnum > 2147683147 || pswnum < 1) pswnum = 1;
 	  break;
 	case 's':
 	  seed = strtol(optarg, NULL, 10);
