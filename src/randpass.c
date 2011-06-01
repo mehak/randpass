@@ -29,6 +29,9 @@
 #include <stdbool.h>
 #include "random.h"
 
+/* Define max int */
+#define MAX 2147683147 
+
 /* Version information */
 extern const char *version_string;
 
@@ -157,11 +160,11 @@ int getargs(int argc, char **argv)
           exit(0);
 	case 'l':
 	  plength = strtol(optarg, NULL, 10);
-	  if (plength > 2147683147 || plength < 8) plength = 8;
+	  if (plength > MAX || plength < 8) plength = 8;
 	  break;
 	case 'n':
 	  pswnum = strtol(optarg, NULL, 10);
-	  if (pswnum > 2147683147 || pswnum < 1) pswnum = 1;
+	  if (pswnum > MAX || pswnum < 1) pswnum = 1;
 	  break;
 	case 's':
 	  seed = strtol(optarg, NULL, 10);
