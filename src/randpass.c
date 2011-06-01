@@ -38,7 +38,6 @@ int getargs(int argc, char **argv);
 int showpass(int passlen, int passnum);
 static void usage(FILE *stream, int status);
 char genchar(const int charpool);
-/* int errorout(int errors); // This needs to be written, used to show errors */
 
 /* Global Variables */
 static int plength;         /* Password length */
@@ -50,7 +49,6 @@ static FILE *outfp; 	    /* Output stream - default stdout */
 static char *program_name;  /* Program that executed this program */
 static int charpool;	    /* Replaces the nalpha, nnum, and npunc stuff, check 
 			       the randpass function for details */
-/*static int errors;	  */  // Used to hold various program specific errors, not implemented 
 
 /* Makes random password of length plength */  
 char *randpass(const int plength)
@@ -135,7 +133,6 @@ int getargs(int argc, char **argv)
 	{"noalpha",    no_argument,       0, 'A'},
 	{"nonum",      no_argument,       0, 'N'},
 	{"nopunc",     no_argument,       0, 'P'},
-	{"nointeract", no_argument,       0, 'R'},
 	{0, 0, 0, 0}
  };
 
@@ -190,11 +187,6 @@ int getargs(int argc, char **argv)
 	  break;
 	case 'P':
 	  charpool += 2;
-	  break;
-	case 'R': // Possible remove, at the very least redefine
-	  break;
-	default:
-	  // Going to implement with errorOut
 	  break;
  	}
 
@@ -309,29 +301,16 @@ char genchar(const int charpool)
 			while ( !ispunct(rn) );
 
 			break;
-		default:
-			// Going to implement with errorout
-			break;
 	}
 
 	return(rn);
 }
-
-/* This is used to show various program specific errors to the user 
-   because this program will always display one password of character
-   length eight.  Or it will for the most part. */
-/*int errorout(int errors)
-{ 
-}
-*/
 
 int main(int argc, char **argv)
 {
  getargs(argc, argv);
 
  showpass(plength, pswnum);
-
- /* errorout(int errors); */
 
  return(0);
 }
