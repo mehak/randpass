@@ -60,7 +60,7 @@ char *randpass(const int plength)
  char *password; /* holds the random password */
 
  password = (char*) malloc (plength + 1);
- memset (password, 0, plength + 1); /* Set password to all 0's */
+ memset(password, 0, plength + 1); /* Set password to all 0's */
 
  /* Used to generate the password.
   0 - All characters in all positions
@@ -76,42 +76,30 @@ char *randpass(const int plength)
 	 switch(charpool) {
 		case 0:
 			password[i] = genchar(0);
-
 			break;
 		case 1:
-			if (i == 0) {
+			if (i == 0) 
 				password[i] = genchar(3);
-			}
-			else {
+			else 
 				password[i] = genchar(0);
-			}
-
 			break;
 		case 2:
 			password[i] = genchar(1);
-
 			break;
 		case 3:
 			password[i] = genchar(2);
-
 			break;
 		case 4: 
 			password[i] = genchar(4);
-
 			break;
 		case 5:
 			password[i] = genchar(3);
-
 			break;
 		case 6:
 			password[i] = genchar(5);
-
 			break;
 		case 7:
 			password[i] = genchar(6);
-
-			break;
-		default:
 			break;
 	}
 
@@ -266,21 +254,18 @@ char genchar(const int charpool)
 	switch(charpool) {
 		case 0:
 			rn = randint(33, 126);
-
 			break;
 		case 1:
 			do {
 				rn = randint(48, 122);
 			}
 			while ( !isalnum(rn) );
-
 			break;
 		case 2:
 			do {
 				rn = randint(33, 126);
 			}
 			while ( isdigit(rn) );
-
 			break;
 		case 3:
 			do {
@@ -293,7 +278,6 @@ char genchar(const int charpool)
 				rn = randint(33, 126);
 			}
 			while ( isalpha(rn) );
-
 			break;
 		case 5:
 			rn = randint(48, 57);
@@ -304,7 +288,6 @@ char genchar(const int charpool)
 				rn = randint(33, 126);
 			}
 			while ( !ispunct(rn) );
-
 			break;
 	}
 
