@@ -188,6 +188,8 @@ int getargs(int argc, char **argv)
 	case 'P':
 	  charpool += 2;
 	  break;
+	default:
+	  usage(stdout, 1);
  	}
 
  }
